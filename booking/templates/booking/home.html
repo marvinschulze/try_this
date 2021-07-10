@@ -1,0 +1,59 @@
+{% extends 'booking/base.html' %} 
+
+{% block content %}  
+
+
+<!-- Stats -->
+<!-- <section class="text-gray-600 body-font hidden sm:block">
+  <div class="container px-5 py-12 mx-auto">
+    <div class="flex-wrap -m-4 text-center  flex">
+      <div class="p-2 sm:p-4 sm:w-1/4 w-1/2">
+        <h2 class="title-font font-medium sm:text-4xl text-3xl text-gray-900">2</h2>
+        <p class="leading-relaxed">Visitors</p>
+      </div>
+      <div class="p-2 sm:p-4 sm:w-1/4 w-1/2">
+        <h2 class="title-font font-medium sm:text-4xl text-3xl text-gray-900">3</h2>
+        <p class="leading-relaxed">Hours worked</p>
+      </div>
+      <div class="p-2 sm:p-4 sm:w-1/4 w-1/2">
+        <h2 class="title-font font-medium sm:text-4xl text-3xl text-gray-900">35</h2>
+        <p class="leading-relaxed">Breaks taken</p>
+      </div>
+      <div class="p-2 sm:p-4 sm:w-1/4 w-1/2">
+        <h2 class="title-font font-medium sm:text-4xl text-3xl text-gray-900">4</h2>
+        <p class="leading-relaxed">Available Seats</p>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- Welcome Section -->
+<div class="container sm:py-6 sm:px-10 mx-auto">
+    <h1 class="text-center text-3xl py-2 font-bold mb-4">Welcome to the study, so to speak.</h1>
+    <div class="grid grid-cols-1 gap-2 sm:gap-8 sm:p-2 text-center md:mx-8">
+        <div class="bg-white rounded-lg p-4 sm:px-6">
+          <h2 class="font-semibold text-xl text-gray-900">Do you need a place to really fall in love with working?</h2>
+          <p class="p-4 sm:px-8 text-justify text-base font-light">An ancient plant referenced biblically as the Holy Herb and gets your noggin’ rocked. Taco Bell 4th meal with Doritos Locos tacos and a knife rip on the side. Legalize spliffs for recreational Snoop Dogg edibles pusher cannabidiol cartoons. Crystalized buds from trimming tasty weed pens THC sativa euphoric resinated dome piece. </p>
+          <button class="flex mx-auto mt-4 text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-md"><a href="{% url 'booking:booking-index' %}">Book a Seat.</a> </button>
+        </div> 
+        <!-- <div class="bg-white rounded-lg p-6">
+          <h2 class="font-semibold text-xl text-gray-900">Wanna now more about Coworking?</h2>
+          <p class="px-8 py-4 text-justify text-base font-light">An ancient plant referenced biblically as the Holy Herb and gets your noggin’ rocked. Taco Bell 4th meal with Doritos Locos tacos and a knife rip on the side. Legalize spliffs for recreational Snoop Dogg edibles pusher cannabidiol cartoons. Crystalized buds from trimming tasty weed pens THC sativa euphoric resinated dome piece. </p>
+          <button class="flex mx-auto mt-4 text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-md">Look, it's awesome.</button>
+        </div>
+        <div class="bg-white rounded-lg p-6">
+          <h2 class="font-semibold text-xl text-gray-900">What about coffe-breaks and snacks?</h2>
+          <p class="px-8 py-4 text-justify text-base font-light">An ancient plant referenced biblically as the Holy Herb and gets your noggin’ rocked. Taco Bell 4th meal with Doritos Locos tacos and a knife rip on the side. Legalize spliffs for recreational Snoop Dogg edibles pusher cannabidiol cartoons. Crystalized buds from trimming tasty weed pens THC sativa euphoric resinated dome piece. </p>
+          <button class="flex mx-auto mt-4 text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-md">Check the menu!</button>
+        </div>
+        <div class="bg-white rounded-lg p-6">
+          <h2 class="font-semibold text-xl text-gray-900">How about payment?</h2>
+          <p class="px-8 py-4 text-justify text-base font-light">An ancient plant referenced biblically as the Holy Herb and gets your noggin’ rocked. Taco Bell 4th meal with Doritos Locos tacos and a knife rip on the side. Legalize spliffs for recreational Snoop Dogg edibles pusher cannabidiol cartoons. Crystalized buds from trimming tasty weed pens THC sativa euphoric resinated dome piece. </p>
+          <button class="flex mx-auto mt-4 text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-md">Calculate your costs.</button>
+        </div> -->
+    </div>
+</div>
+
+
+
+{% endblock %}
