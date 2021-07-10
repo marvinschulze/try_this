@@ -1,0 +1,23 @@
+{% extends 'booking/base.html' %} 
+
+{% block content %} 
+
+<div class="container mx-auto py-2 md:py-6 md:px-20 text-center">
+
+    <h1 class=" text-2xl font-semibold sm:font-bold sm:text-3xl md:mb-4">Thanks for booking the spot!</h1>
+    <p class="p-2 md:px-8 md:py-4 sm:text-center text-md font-light">You have booked a study time.</p>
+    
+    <!-- Display Date, Time, Location, Name, E-Mail -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-4 sm:gap-y-8 p-1 md:p-12">
+        <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">{{booking.name}}</span><span class="text-sm">{{booking.connection}}</span></div>
+        <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Date</span><span class="text-sm">{{booking.date}}</span></div>
+        <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Time</span><span class="text-sm">{{booking.time_start}} - {{booking.time_end}}</span></div>
+        <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Workspace</span><span class="text-sm">Depending on availability.</span></div>
+        <button class="col-span-1 md:col-span-2 mt-4 text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-md"><a href="{% url 'booking:home' %}">Back Home.</a> </button>
+    </div>
+
+</div>
+
+
+
+{% endblock %}
