@@ -1,0 +1,16 @@
+{% extends 'booking/base.html' %} 
+
+{% block content %}  
+
+
+
+{% for c in context  %}
+    {% for x in c  %}
+        {{x}}
+    {%  endfor %}
+{%  endfor %}
+
+
+
+
+{% endblock %}
