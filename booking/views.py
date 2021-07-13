@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Booking, Timeslot
 from .forms import BookingForm
 
-from datetime import date
+import datetime
 
 # Create your views here.
 
@@ -45,34 +45,24 @@ def bookingOverview(request, booking_id):
 def calendar(request):
     template_name = 'booking/calendar.html'
 
-    # context = {}
-    # # fetch all dates in the database, that are today or in the future || collect bookings accordingly  
-    # for timeslot in Timeslot.objects.all():
-    #     print(timeslot)
-    #     t = timeslot.values()
-    #     print(t)
+    # set up empty list for storing && acces database
+    timeslot_booking_joined = []
+    future_timeslots = Timeslot.objects.all().filter(date__gte=datetime.date.today()).order_by('date')
 
-    # content = {}
-    # future_timeslots = Timeslot.objects.all().select_related()
-    # for slot in future_timeslots:
-    #     slot_bookings = slot.booking_set.all()
-    #     content[slot] = {'date': "now"}
-    # print(content)
+    # loop over query set and reformat results while getting related booking data
+    for timeslot in future_timeslots:
+    
+        # get & format related bookings and sotre in list
+        bookings_list = []
+        for b in timeslot.booking_set.all():
+            bookings_list.append("{} ({} - {})".format(b.name, b.time_start.strftime("%H:%M"), b.time_end.strftime("%H:%M")))
 
-    # test = {"hello": "1221", "jlasd": 12213}
-    future_timeslots = Timeslot.objects.filter(date__gte=date.today())
-    print(future_timeslots.values())
-    for f in future_timeslots:
-        print(f.booking_set.all())
-    # for f in future_timeslots:
-    #     print(f.select_related())
-    # apparently same effect:
-    # future_timeslots = Timeslot.objects.all().filter(date__gte=date.today())
+        # extract info from timeslot and combine with related bookings; append to combined set
+        timeslot_booking_joined.append(
+            {timeslot: {'date': timeslot.date, 't_start':timeslot.time_start, 't_end':timeslot.time_end, 'seats': timeslot.av_seats, 'bookings': bookings_list}}
+            )
 
-    test = {"first": {"date": 12}, "second": "you"}
-    test2 = {"first": {"date": 12}, "second": "you"}
-
-    return render(request, template_name, context={'test':test, 'test2': test2})
+    return render(request, template_name, context={'slots': timeslot_booking_joined})
 
 
 
