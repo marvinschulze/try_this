@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Booking, Timeslot
 from .forms import BookingForm
 
+import datetime
+
 # Create your views here.
 
 def home(request):
@@ -34,10 +36,34 @@ def booking(request):
     
     return render(request, template_name, {'form':form, 'date_error':date_error})
 
+# Shows overview to user who just made a booking || BUG: accesible to anyone by url
 def bookingOverview(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
     template_name = 'booking/book-overview.html'
     return render(request, template_name, {'booking': booking})
+
+def calendar(request):
+    template_name = 'booking/calendar.html'
+
+    # set up empty list for storing && acces database
+    timeslot_booking_joined = []
+    future_timeslots = Timeslot.objects.all().filter(date__gte=datetime.date.today()).order_by('date')
+
+    # loop over query set and reformat results while getting related booking data
+    for timeslot in future_timeslots:
+    
+        # get & format related bookings and sotre in list
+        bookings_list = []
+        for b in timeslot.booking_set.all():
+            bookings_list.append("{} ({} - {})".format(b.name, b.time_start.strftime("%H:%M"), b.time_end.strftime("%H:%M")))
+
+        # extract info from timeslot and combine with related bookings; append to combined set
+        timeslot_booking_joined.append(
+            {timeslot: {'date': timeslot.date, 't_start':timeslot.time_start, 't_end':timeslot.time_end, 'seats': timeslot.av_seats, 'bookings': bookings_list}}
+            )
+
+    return render(request, template_name, context={'slots': timeslot_booking_joined})
+
 
 
 

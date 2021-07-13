@@ -19,11 +19,8 @@
                 </svg>
                 <span class="ml-3 text-xl "><a href="{% url 'booking:home' %}" class="font-bold">Marv's Booking</a></span>
               </a>
-              <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-                <a class="mr-5 hover:text-gray-900">Opening Hours</a>
-                <a class="mr-5 hover:text-gray-900">More Info</a>
-              </nav>
-              <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Book now
+              <span class="ml-3 text-md"><a href="{% url 'booking:calendar' %}">Calendar</a></span>
+              <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0 md:ml-4">Book now
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
                   <path d="M5 12h14M12 5l7 7-7 7"></path>
                 </svg>
@@ -31,7 +28,7 @@
             </div>
           </header>
 
-        <div class="width-full px-8 ">
+        <div class="width-full px-8 pb-4 ">
 
             {% block content %} 
             {% endblock %} 

@@ -23,4 +23,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('book-now/', views.booking, name='booking-index'),
     path('<int:booking_id>/book-overview/', views.bookingOverview, name='booking-overview'),
+    path('calendar', views.calendar, name="calendar"),
 ]
