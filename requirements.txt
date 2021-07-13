@@ -4,3 +4,4 @@ django-heroku
 requests
 django-widget-tweaks
 whitenoise
+psycopg2
