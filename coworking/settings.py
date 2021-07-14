@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-import environ
+# import environ
 
-env = environ.Env()
-environ.Env.read_env()
+# env = environ.Env()
+# environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,10 +30,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'django-insecure-fs3%6$)rw0dksdf9o*3qvuv1uf^=^+=zi&ty3%2#x!4!&$c1^^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-# ALLOWED_HOSTS = ['marvs.herokuapp.com', 'localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['marvs.herokuapp.com']
+ALLOWED_HOSTS = ['marvs.herokuapp.com', 'localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['marvs.herokuapp.com']
 
 
 # Application definition
@@ -87,13 +87,21 @@ WSGI_APPLICATION = 'coworking.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': env('POSTGRES_DB_NAME'),
+    #     'USER': env('POSTGRES_USER'),
+    #     'PASSWORD': env('POSTGRES_PASSWORD'),
+    #     'HOST': env('POSTGRES_HOST'), 
+    #     'PORT': env('POSTGRES_PORT'),
+    # },
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('POSTGRES_DB_NAME'),
-        'USER': env('POSTGRES_USER'),
-        'PASSWORD': env('POSTGRES_PASSWORD'),
-        'HOST': env('POSTGRES_HOST'), 
-        'PORT': env('POSTGRES_PORT'),
+        'NAME': 'mydb',
+        'USER': 'schulze',
+        'PASSWORD': 'mypass',
+        'HOST': 'localhost', 
+        'PORT': '5432',
     }
 }
 
