@@ -64,7 +64,22 @@ def calendar(request):
 
     return render(request, template_name, context={'slots': timeslot_booking_joined})
 
+# LOGIN RELATED PAGES
 
+def login(request):
+    template_name = 'booking/login.html'
+
+    return render(request, template_name)
+
+def register(request):
+    template_name = 'booking/register.html'
+
+    return render(request, template_name)
+
+def users_profile(request):
+    template_name = 'booking/user-profile.html'
+
+    return render(request, template_name)
 
 
 ############# [BUG] #############
