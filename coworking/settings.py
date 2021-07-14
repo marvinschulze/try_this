@@ -96,6 +96,7 @@ DATABASES = {
     #     'PORT': env('POSTGRES_PORT'),
     # },
     'default': {
+        # switch back for heroku
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mydb',
         'USER': 'schulze',
