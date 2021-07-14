@@ -29,8 +29,8 @@ SECRET_KEY = 'django-insecure-fs3%6$)rw0dksdf9o*3qvuv1uf^=^+=zi&ty3%2#x!4!&$c1^^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-# ALLOWED_HOSTS = ['marvs.herokuapp.com', 'localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['marvs.herokuapp.com']
+ALLOWED_HOSTS = ['marvs.herokuapp.com', 'localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['marvs.herokuapp.com']
 
 
 # Application definition
@@ -85,8 +85,12 @@ WSGI_APPLICATION = 'coworking.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mydb',
+        'USER': 'schulze',
+        'PASSORD': 'Apfeldesign99!',
+        'HOST': 'localhost', 
+        'PORT': '',
     }
 }
 
