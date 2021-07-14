@@ -86,11 +86,11 @@ WSGI_APPLICATION = 'coworking.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mydb',
-        'USER': 'schulze',
-        'PASSORD': 'Apfeldesign99!',
+        'NAME': 'POSTGRES_DB_NAME',
+        'USER': 'POSTGRES_USER',
+        'PASSORD': 'POSTGRES_PASSWORD',
         'HOST': 'marvs.herokuapp.com', 
-        'PORT': '',
+        'PORT': 'POSTGRES_PORT',
     }
 }
 
