@@ -88,9 +88,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'POSTGRES_DB_NAME',
         'USER': 'POSTGRES_USER',
-        'PASSORD': 'POSTGRES_PASSWORD',
-        'HOST': 'marvs.herokuapp.com', 
-        'PORT': 'POSTGRES_PORT',
+        'PASSWORD': 'POSTGRES_PASSWORD',
+        'HOST': 'POSTGRES_HOST', 
+        'PORT': 5432,
     }
 }
 
