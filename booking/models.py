@@ -47,5 +47,22 @@ class Booking(models.Model):
         return ("[{}] - {} ({})").format(self.id, self.name, self.connection)
 
 
+class Coworker(models.Model):
+    # necessary info
+    # username/nickname
+    username = models.CharField(max_length=200, unique=True)
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    email = models.EmailField(max_length=200, unique=True)
+    password = models.CharField(max_length=400)
+
+    # can be added 
+    profile_image = models.ImageField(blank=True)
+    description = models.TextField(blank=True)
+    current_projects = models.CharField(max_length=1000, blank=True)
+
+    def __str__(self):
+        return ("[{}] {} {}".format(self.username, self.first_name, self.last_name))
+
 
 
