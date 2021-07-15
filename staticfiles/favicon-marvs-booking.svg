@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <clipPath id="clip-Custom_Size_1">
+      <rect width="40" height="40"/>
+    </clipPath>
+  </defs>
+  <g id="Custom_Size_1" data-name="Custom Size – 1" clip-path="url(#clip-Custom_Size_1)">
+    <rect width="40" height="40" fill="#54b685"/>
+    <text id="Mb" transform="translate(6 28)" fill="rgba(255,49,239,0.82)" font-size="20" font-family="HelveticaNeue, Helvetica Neue"><tspan x="0" y="0">Mb</tspan></text>
+  </g>
+</svg>
