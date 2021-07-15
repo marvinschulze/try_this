@@ -1,7 +1,16 @@
 from django.shortcuts import get_object_or_404, render, redirect
 
+# Import authentication views & decorators
+from django.contrib.auth import views as auth_views
+# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
+from django.views.generic.edit import CreateView
+
 from .models import Booking, Timeslot
-from .forms import BookingForm
+from .forms import BookingForm, RegisterForm
+
+
 
 import datetime
 
@@ -71,16 +80,48 @@ def login(request):
 
     return render(request, template_name)
 
-def register(request):
-    template_name = 'booking/register.html'
+class LoginView(auth_views.LoginView):
+    template_name = 'booking/login.html'
 
-    return render(request, template_name)
+class LogoutView(auth_views.LogoutView):
+    next_page = 'booking:home'
+
+class RegisterView(CreateView):
+    template_name = 'booking/register.html'
+    model = User 
+    fields = ['username', 'password']
+
+
+def register(request):
+    # check if user is already logged in, if so: redirect
+    if request.user.is_authenticated:
+        return redirect('booking:profile')
+    else:  
+        user = User.objects.create_user('test', 'lkjdlska@lkasd.de', 'password')
+        # user is not logged in
+        template_name = 'booking/register.html' 
+        if request.method == 'POST':
+            form = RegisterForm(request.POST)
+            if form.is_valid():
+                # user.save()
+                pass
+            else:
+                form = RegisterForm()
+        else:
+            form = RegisterForm()
+
+        return render(request, template_name, {'form':form})
+
 
 def users_profile(request):
-    template_name = 'booking/user-profile.html'
-
-    return render(request, template_name)
+    # check if a user is logged in 
+    if not request.user.is_authenticated:
+        # template_name = 'booking/calendar.html'
+        return redirect('booking:login')
+    else:  
+        template_name = 'booking/user-profile.html'
+        return render(request, template_name)
 
 
 ############# [BUG] #############
-# bookingoverview accesible with url
+# Login view is accesible when being logged in
