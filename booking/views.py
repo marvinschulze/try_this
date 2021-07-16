@@ -1,15 +1,13 @@
 from django.shortcuts import get_object_or_404, render, redirect
 
-# Import authentication views & decorators
-from django.contrib.auth import views as auth_views
-# from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+# # Import authentication views & decorators
+# from django.contrib.auth import views as auth_views
+# # from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.models import User
 
-from django.views.generic.edit import CreateView
 
 from .models import Booking, Timeslot
-from .forms import BookingForm, CustomUserCreationForm
+from .forms import BookingForm
 
 
 
@@ -74,57 +72,7 @@ def calendar(request):
 
     return render(request, template_name, context={'slots': timeslot_booking_joined})
 
-# LOGIN RELATED PAGES
 
-def login(request):
-    template_name = 'booking/login.html'
-
-    return render(request, template_name)
-
-class LoginView(auth_views.LoginView):
-    template_name = 'booking/login.html'
-
-class LogoutView(auth_views.LogoutView):
-    next_page = 'booking:home'
-
-class RegisterView(CreateView):
-    template_name = 'booking/register.html'
-    model = User 
-    fields = ['username', 'password']
-
-
-def register(request):
-    # check if user is already logged in, if so: redirect
-    if request.user.is_authenticated:
-        return redirect('booking:profile')
-    else:  
-        template_name = 'booking/register.html' 
-        if request.method == 'POST':
-            form = CustomUserCreationForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('booking:home')
-        else:
-            form = CustomUserCreationForm()
-
-        return render(request, template_name, {'form':form})
-
-# Registration using the built in django UserCreationForm | available fields limited
-# def register(request):
-#     # check if user is already logged in, if so: redirect
-#     if request.user.is_authenticated:
-#         return redirect('booking:profile')
-#     else:  
-#         template_name = 'booking/register.html'
-#         if request.method == 'POST':
-#             form = UserCreationForm(request.POST)
-#             if form.is_valid():
-#                 form.save()
-#                 return redirect('booking:login')
-#         else:
-#             form = UserCreationForm()
-
-#         return render(request, template_name, {'form':form})
 
 
 def users_profile(request):
@@ -138,4 +86,3 @@ def users_profile(request):
 
 
 ############# [BUG] #############
-# Login view is accesible when being logged in

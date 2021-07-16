@@ -23,7 +23,7 @@
               {% if user.is_authenticated %}
 			  	<span class="md:ml-3 text-md"><a href="{% url 'booking:profile' %}">Profile</a></span>
               {% else %}
-              	<span class="md:ml-3 text-md"><a href="{% url 'booking:login' %}">Login</a></span>
+              	<span class="md:ml-3 text-md"><a href="{% url 'login:login' %}">Login</a></span>
               {% endif %}
               <a href="{% url 'booking:booking-index' %}"></a><button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0 md:ml-4">Book now
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
