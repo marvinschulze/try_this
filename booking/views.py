@@ -4,11 +4,12 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import views as auth_views
 # from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 from django.views.generic.edit import CreateView
 
 from .models import Booking, Timeslot
-from .forms import BookingForm, RegisterForm
+from .forms import BookingForm, CustomUserCreationForm
 
 
 
@@ -97,20 +98,33 @@ def register(request):
     if request.user.is_authenticated:
         return redirect('booking:profile')
     else:  
-        user = User.objects.create_user('test', 'lkjdlska@lkasd.de', 'password')
-        # user is not logged in
         template_name = 'booking/register.html' 
         if request.method == 'POST':
-            form = RegisterForm(request.POST)
+            form = CustomUserCreationForm(request.POST)
             if form.is_valid():
-                # user.save()
-                pass
-            else:
-                form = RegisterForm()
+                form.save()
+                return redirect('booking:home')
         else:
-            form = RegisterForm()
+            form = CustomUserCreationForm()
 
         return render(request, template_name, {'form':form})
+
+# Registration using the built in django UserCreationForm | available fields limited
+# def register(request):
+#     # check if user is already logged in, if so: redirect
+#     if request.user.is_authenticated:
+#         return redirect('booking:profile')
+#     else:  
+#         template_name = 'booking/register.html'
+#         if request.method == 'POST':
+#             form = UserCreationForm(request.POST)
+#             if form.is_valid():
+#                 form.save()
+#                 return redirect('booking:login')
+#         else:
+#             form = UserCreationForm()
+
+#         return render(request, template_name, {'form':form})
 
 
 def users_profile(request):
