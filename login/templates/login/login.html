@@ -8,7 +8,7 @@
         {% csrf_token %}
         {% load widget_tweaks %}
         {% if form.errors %}
-            <span class="text-red-900 w-full text-center">Your username and password didn't match. Both fields may be case sensitive.</span>
+            <span class="text-red-900 w-full text-center">Your username and password didn't match. </span>
         {% endif %}
         {% render_field form.username placeholder="Your Username" class="w-full px-4 h-8 bg-gray-50 bg-opacity-50 rounded border border-green-800 border-2 focus:ring-2 focus:bg-transparent focus:ring-green-200 focus:green-500 text-base outline-none" %}
         {% render_field form.password placeholder="Your Password" class="w-full px-4 h-8 bg-gray-50 bg-opacity-50 rounded border border-green-800 border-2 focus:ring-2 focus:bg-transparent focus:ring-green-200 focus:green-500 text-base outline-none" %}

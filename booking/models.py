@@ -1,7 +1,8 @@
 from django.db import models
 import datetime
 
-# Create your models here.
+from django.contrib.auth.models import User
+
 
 class Timeslot(models.Model):
     # table of available dates with available times 
@@ -47,14 +48,8 @@ class Booking(models.Model):
         return ("[{}] - {} ({})").format(self.id, self.name, self.connection)
 
 
-class Coworker(models.Model):
-    # necessary info
-    # username/nickname
-    username = models.CharField(max_length=200, unique=True)
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
-    email = models.EmailField(max_length=200, unique=True)
-    password = models.CharField(max_length=400)
+class UserInfo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # can be added 
     profile_image = models.ImageField(blank=True)
@@ -62,7 +57,7 @@ class Coworker(models.Model):
     current_projects = models.CharField(max_length=1000, blank=True)
 
     def __str__(self):
-        return ("[{}] {} {}".format(self.username, self.first_name, self.last_name))
+        return "[{}] - {}".format(self.id, self.user)
 
 
 

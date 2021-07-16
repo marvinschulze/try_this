@@ -11,11 +11,6 @@ from .forms import CustomUserCreationForm
 
 
 
-# def login(request):
-#     template_name = 'login/login.html'
-
-#     return render(request, template_name)
-
 class LoginView(auth_views.LoginView):
     template_name = 'login/login.html'
 
@@ -34,28 +29,14 @@ def register(request):
             form = CustomUserCreationForm(request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('booking:home')
+                return redirect('login:login')
         else:
             form = CustomUserCreationForm()
 
         return render(request, template_name, {'form':form})
 
-# Registration using the built in django UserCreationForm | available fields limited
-# def register(request):
-#     # check if user is already logged in, if so: redirect
-#     if request.user.is_authenticated:
-#         return redirect('booking:profile')
-#     else:  
-#         template_name = 'booking/register.html'
-#         if request.method == 'POST':
-#             form = UserCreationForm(request.POST)
-#             if form.is_valid():
-#                 form.save()
-#                 return redirect('booking:login')
-#         else:
-#             form = UserCreationForm()
 
-#         return render(request, template_name, {'form':form})
 
 ############# [BUG] #############
 # Login view is accesible when being logged in
+# username is case sensitive!!! A) after username input in login --> .lower() B) when registering check against all possible capitalized usernames, then keep casesensitivity

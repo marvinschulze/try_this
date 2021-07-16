@@ -3,10 +3,10 @@ from django.shortcuts import get_object_or_404, render, redirect
 # # Import authentication views & decorators
 # from django.contrib.auth import views as auth_views
 # # from django.contrib.auth.decorators import login_required
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 
 
-from .models import Booking, Timeslot
+from .models import Booking, Timeslot, UserInfo
 from .forms import BookingForm
 
 
@@ -82,7 +82,29 @@ def users_profile(request):
         return redirect('booking:login')
     else:  
         template_name = 'booking/user-profile.html'
-        return render(request, template_name)
+        this_user = User.objects.get(username=request.user.username)
+        try:
+            this_user_info = UserInfo.objects.get(user=this_user.id)
+            if this_user_info.description:
+                description = this_user_info.description
+            else: 
+                description = None
+            if this_user_info.current_projects:
+                curr_projects = this_user_info.current_projects
+            else:
+                curr_projects = None
+            if this_user_info.profile_image:
+                profile_image = this_user_info.profile_image
+            else:
+                profile_image = None
+        except Exception as err:
+            print("Finding user (attributes) throw an exception: \n" + err)
+
+        user_info = {
+            'first_name': this_user.first_name, 'nickname': this_user.username,
+            'description': description, 'projects': curr_projects, 'profile_image': profile_image,
+            }
+        return render(request, template_name, {'user': user_info})
 
 
 ############# [BUG] #############

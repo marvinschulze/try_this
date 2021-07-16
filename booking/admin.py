@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from booking.models import Booking, Timeslot, Coworker
+from booking.models import Booking, Timeslot, UserInfo
 # Register your models here.
 admin.site.register(Booking)
 admin.site.register(Timeslot)
-admin.site.register(Coworker)
+admin.site.register(UserInfo)
