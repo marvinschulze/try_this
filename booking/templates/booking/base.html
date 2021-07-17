@@ -19,9 +19,10 @@
                 </svg>
                 <span class="ml-3 text-xl "><a href="{% url 'booking:home' %}" class="font-bold">Marv's Booking</a></span>
               </a>
-              <span class="md:ml-3 text-md"><a href="{% url 'booking:calendar' %}">Calendar</a></span>
               {% if user.is_authenticated %}
-			  	<span class="md:ml-3 text-md"><a href="{% url 'booking:profile' %}">Profile</a></span>
+                <span class="md:ml-3 text-md"><a href="{% url 'booking:calendar' %}">Calendar</a></span>
+			  	      <span class="md:ml-3 text-md"><a href="{% url 'booking:profile' %}">Profile</a></span>
+			  	      <span class="md:ml-3 text-md text-red-700"><a href="{% url 'login:logout' %}">Logout</a></span>
               {% else %}
               	<span class="md:ml-3 text-md"><a href="{% url 'login:login' %}">Login</a></span>
               {% endif %}

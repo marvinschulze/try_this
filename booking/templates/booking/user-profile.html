@@ -4,7 +4,7 @@
 <div class="mx-20 lg:mx-32 mt-8 py-4 bg-white rounded">
     <!-- Navbar -->
     <nav class="w-full px-12 py-3 text-sm text-semibold text-center flex justify-between border-b-2 border-solid border-gray-900 ">
-        <a href="" class="text-green-900">{{user.nickname}}</a>
+        <a href="" class="text-green-900">{{user_info.nickname}}</a>
         <div class="space-x-2">
             <a href="" class="">Edit Profile</a>
             <a href="{% url 'login:logout' %}" class="text-red-400">Logout</a>
@@ -13,11 +13,11 @@
     <!-- Description & Image -->
     <div class="grid grid-cols-2 justify-items-center gap-x-8 mt-4 py-2 border-b-2 border-solid border-gray-600">
         <div class="col-span-1 flex flex-wrap items-center content-center">
-            <span class="text-lg tracking-wide text-center w-full">Hallo {{user.first_name}}.</span>
+            <span class="text-lg tracking-wide text-center w-full">Hallo {{user_info.first_name}}.</span>
             <!-- <span class="text-sm italic text-center w-full">Here is space for your self description. <p class="underline">Add now.</p></span> -->
             <span class="text-sm italic text-center w-full">
-                {% if user.description %}
-                    {{user.description}}
+                {% if user_info.description %}
+                    {{user_info.description}}
                 {% else %} 
                     Here is space for your self description. <p class="underline">Add now.</p>
                 {% endif %}
@@ -26,8 +26,8 @@
         <div class="col-span-1  flex flex-col items-center">
             <div class="w-24 h-24 bg-gray-200 rounded-full"></div>
             <span class="text-sm italic">
-                {% if user.profile_image %}
-                    {{user.profile_image}}
+                {% if user_info.profile_image %}
+                    {{user_info.profile_image}}
                 {% else %} 
                     Want to <span class="underline">add a picture</span>?
                 {% endif %}

@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
 
 
-from .models import Booking, Timeslot, UserInfo
+from .models import Booking, UserInfo, CowoSlot
 from .forms import BookingForm
 
 
@@ -14,6 +14,9 @@ from .forms import BookingForm
 import datetime
 
 # Create your views here.
+def some(request):
+    c = CowoSlot.objects.all()
+    return render(request, 'booking/home.html')
 
 def home(request):
     template_name = 'booking/home.html'
@@ -28,7 +31,7 @@ def booking(request):
         form = BookingForm(request.POST)
         if form.is_valid():
             # Validity check: available time selected?
-            slot = Timeslot.objects.get(id=form.cleaned_data['date'].id)
+            slot = CowoSlot.objects.get(id=form.cleaned_data['date'].id)
             # get input for time_start & time_end
             t_s = form.cleaned_data['time_start']
             t_e = form.cleaned_data['time_end']
@@ -52,25 +55,24 @@ def bookingOverview(request, booking_id):
 
 def calendar(request):
     template_name = 'booking/calendar.html'
-
     # set up empty list for storing && acces database
-    timeslot_booking_joined = []
-    future_timeslots = Timeslot.objects.all().filter(date__gte=datetime.date.today()).order_by('date')
+    future_slots = CowoSlot.objects.all().filter(date__gte=datetime.date.today()).order_by('date')
+    CowoSlot_booking_joined = []
 
     # loop over query set and reformat results while getting related booking data
-    for timeslot in future_timeslots:
+    for slot in future_slots:
     
         # get & format related bookings and sotre in list
         bookings_list = []
-        for b in timeslot.booking_set.all():
-            bookings_list.append("{} ({} - {})".format(b.name, b.time_start.strftime("%H:%M"), b.time_end.strftime("%H:%M")))
+        for b in slot.booking_set.all():
+            bookings_list.append("{} ({} - {})".format(b.username, b.time_start.strftime("%H:%M"), b.time_end.strftime("%H:%M")))
 
-        # extract info from timeslot and combine with related bookings; append to combined set
-        timeslot_booking_joined.append(
-            {timeslot: {'date': timeslot.date, 't_start':timeslot.time_start, 't_end':timeslot.time_end, 'seats': timeslot.av_seats, 'bookings': bookings_list}}
+        # extract info from CowoSlot and combine with related bookings; append to combined set
+        CowoSlot_booking_joined.append(
+            {slot: {'date': slot.date, 't_start':slot.time_start, 't_end':slot.time_end, 'seats': slot.av_seats, 'bookings': bookings_list}}
             )
 
-    return render(request, template_name, context={'slots': timeslot_booking_joined})
+    return render(request, template_name, context={'slots': CowoSlot_booking_joined})
 
 
 
@@ -78,33 +80,31 @@ def calendar(request):
 def users_profile(request):
     # check if a user is logged in 
     if not request.user.is_authenticated:
-        # template_name = 'booking/calendar.html'
-        return redirect('booking:login')
+        return redirect('login:login')
     else:  
         template_name = 'booking/user-profile.html'
         this_user = User.objects.get(username=request.user.username)
+        description = None
+        curr_projects = None
+        profile_image = None
+
         try:
             this_user_info = UserInfo.objects.get(user=this_user.id)
             if this_user_info.description:
                 description = this_user_info.description
-            else: 
-                description = None
             if this_user_info.current_projects:
                 curr_projects = this_user_info.current_projects
-            else:
-                curr_projects = None
             if this_user_info.profile_image:
                 profile_image = this_user_info.profile_image
-            else:
-                profile_image = None
         except Exception as err:
-            print("Finding user (attributes) throw an exception: \n" + err)
+            print("\nFinding user (attributes) throw an exception: \n" + str(err))
 
         user_info = {
             'first_name': this_user.first_name, 'nickname': this_user.username,
             'description': description, 'projects': curr_projects, 'profile_image': profile_image,
             }
-        return render(request, template_name, {'user': user_info})
+        return render(request, template_name, {'user_info': user_info})
+
 
 
 ############# [BUG] #############

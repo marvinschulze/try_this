@@ -4,7 +4,8 @@ import datetime
 from django.contrib.auth.models import User
 
 
-class Timeslot(models.Model):
+class CowoSlot(models.Model):
+    host_username = models.ForeignKey(User, default=11, on_delete=models.CASCADE)
     # table of available dates with available times 
     date = models.DateField()
     time_start = models.TimeField()
@@ -23,29 +24,16 @@ class Timeslot(models.Model):
 
     
 class Booking(models.Model):
-    # choices for connection:
-    CONNECTION_CHOICES = [
-        ('Friend', 'Friend'), 
-        ('Wife', 'Wife'), 
-        ('Roommate', 'Roommate'), 
-        ('Family', 'Family'), 
-        ('Stranger', 'Stranger')
-    ]
-
-    name = models.CharField(max_length=200)
-    connection = models.CharField(
-        max_length = 12, 
-        choices = CONNECTION_CHOICES,
-        default = 'Friend',
-        )
+    username = models.ForeignKey(User, default=11,  on_delete=models.CASCADE)
+    host_slot = models.ForeignKey(CowoSlot, default=1, on_delete=models.CASCADE)
     # Foreign Table Timeslot (table of date, time, and available seats for each open day)
-    date = models.ForeignKey(Timeslot, default=1, verbose_name="timeslot", on_delete=models.CASCADE)
+    # date = models.ForeignKey(Timeslot, default=1, verbose_name="timeslot", on_delete=models.CASCADE)
     # Check in the view that time_start and time_end are in the limit of Timeslots data // fetch object and return info with view
     time_start = models.TimeField()
     time_end = models.TimeField()
 
     def __str__(self):
-        return ("[{}] - {} ({})").format(self.id, self.name, self.connection)
+        return self.username
 
 
 class UserInfo(models.Model):
