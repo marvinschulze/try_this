@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 
 class CustomUserCreationForm(forms.Form):
     username = forms.CharField()
+    username.label = "bla"
     first_name = forms.CharField()
     last_name = forms.CharField()
     email = forms.EmailField()

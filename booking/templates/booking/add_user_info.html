@@ -1,0 +1,16 @@
+{% extends 'booking/base.html' %} 
+{% block content %} 
+
+<div class="mx-20 lg:mx-32 mt-8 py-4 bg-white rounded divide-y-2 divide-green-800 divide-solid">
+    <form method="post" action="">
+        {% csrf_token %}  
+        {{form.description}}
+        {{form.current_projects}}
+        <!-- {{form.as_p}} -->
+        <input type="hidden" name="user" value="{{ request.user.id }}">
+        <input type="submit" value="Add info to Profile">
+    </form>
+
+</div>
+
+{% endblock %}

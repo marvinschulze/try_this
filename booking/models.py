@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class CowoSlot(models.Model):
-    host_username = models.ForeignKey(User, default=11, on_delete=models.CASCADE)
+    host_username = models.ForeignKey(User, on_delete=models.CASCADE)
     # table of available dates with available times 
     date = models.DateField()
     time_start = models.TimeField()
@@ -33,11 +33,11 @@ class Booking(models.Model):
     time_end = models.TimeField()
 
     def __str__(self):
-        return self.username
+        return str(self.username)
 
 
 class UserInfo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
 
     # can be added 
     profile_image = models.ImageField(blank=True)

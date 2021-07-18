@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 
 from .forms import CustomUserCreationForm
 
+from booking.models import UserInfo
+
 
 
 class LoginView(auth_views.LoginView):
@@ -28,7 +30,13 @@ def register(request):
         if request.method == 'POST':
             form = CustomUserCreationForm(request.POST)
             if form.is_valid():
+                # get cleaned username, safe form; fetch user object from User Table
+                # then create empty entry in UserInfo Table
+                user_to_create = form.cleaned_data['username']
                 form.save()
+                created_user = User.objects.get(username=user_to_create)
+                empty_user_info = UserInfo(user=created_user)
+                empty_user_info.save()
                 return redirect('login:login')
         else:
             form = CustomUserCreationForm()

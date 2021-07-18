@@ -1,9 +1,13 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect, reverse
 
 # # Import authentication views & decorators
 # from django.contrib.auth import views as auth_views
-# # from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+
+from .models import Booking
+
+from django.views.generic.edit import CreateView, UpdateView
 
 
 from .models import Booking, UserInfo, CowoSlot
@@ -14,9 +18,7 @@ from .forms import BookingForm
 import datetime
 
 # Create your views here.
-def some(request):
-    c = CowoSlot.objects.all()
-    return render(request, 'booking/home.html')
+
 
 def home(request):
     template_name = 'booking/home.html'
@@ -75,8 +77,6 @@ def calendar(request):
     return render(request, template_name, context={'slots': CowoSlot_booking_joined})
 
 
-
-
 def users_profile(request):
     # check if a user is logged in 
     if not request.user.is_authenticated:
@@ -84,10 +84,12 @@ def users_profile(request):
     else:  
         template_name = 'booking/user-profile.html'
         this_user = User.objects.get(username=request.user.username)
+        
+        # <<< Trying to get additional Info for the user, if submitted >>>
         description = None
         curr_projects = None
         profile_image = None
-
+        # Try getting a user's info from the DB; if found: check for added info; else return None (set above)
         try:
             this_user_info = UserInfo.objects.get(user=this_user.id)
             if this_user_info.description:
@@ -99,12 +101,46 @@ def users_profile(request):
         except Exception as err:
             print("\nFinding user (attributes) throw an exception: \n" + str(err))
 
+        rel_user_info = UserInfo.objects.get(user=request.user)
+
         user_info = {
             'first_name': this_user.first_name, 'nickname': this_user.username,
             'description': description, 'projects': curr_projects, 'profile_image': profile_image,
+            'id':rel_user_info.id
             }
-        return render(request, template_name, {'user_info': user_info})
+
+        # <<< Get future booked spots for the user, if any >>>
+        future_bookings = Booking.objects.filter(username=this_user).filter(host_slot__date__gte=datetime.date.today()).order_by('host_slot__date')
+        # bookings_and_coworkers = []
+        # for booking in future_bookings:
+        #     bookings_and_coworkers
+        #     other_cowos = Booking.objects.filter(host_slot=booking.host_slot)
+        #     other_cowos_info = []
+        #     for cowo in other_cowos:
+        #         other_cowos_info.append(
+        #             {'username': cowo.username, 'time_start': cowo.time_start, 'time_end': cowo.time_end}
+        #         )
+        #     bookings_and_coworkers.append(
+        #         {booking:other_cowos_info}
+        #     )
+
+            
+
+        return render(request, template_name, {'user_info': user_info, 'bookings':future_bookings})
+
+
+
+# Using update view and creating an empty row on user creation
+class UserInfoUpdateView(UpdateView):
+   
+    template_name = "booking/add_user_info.html"
+    model = UserInfo
+    fields = ['description', 'current_projects']
+
+    def get_success_url(self):
+        return reverse('booking:profile')
 
 
 
 ############# [BUG] #############
+# Make update user info inaccessible
