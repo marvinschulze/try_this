@@ -14,7 +14,7 @@
     <!-- Description & Image -->
     <div class="grid grid-cols-2 justify-items-center gap-x-8 mt-4 py-2 ">
         <div class="col-span-1 flex flex-wrap items-center content-center">
-            <span class="text-lg tracking-wide text-center w-full">Hallo {{user_info.first_name}}.</span>
+            <span class="text-lg tracking-wide text-center w-full">Hallo {{user.first_name}} {{user.last_name}}.</span>
             <!-- <span class="text-sm italic text-center w-full">Here is space for your self description. <p class="underline">Add now.</p></span> -->
             <span class="text-sm italic text-center w-full">
                 {% if user_info.description %}
@@ -45,6 +45,7 @@
     <!-- Future meetings -->
     <div class="mx-auto px-2 py-4 pt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-4 md:gap-8 xl:gap-12 xl:mx-20">
         <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-2xl font-bold">Your future meetings:</h1>
+        {% if bookings %}
         {% for booking in bookings %} 
             <div class="col-span-1 bg-white rounded-lg shadow-xl text-center py-2 ">
                 <h1 class="text-2xl font-bold">{{booking.booking.host_slot.date}}</h1>
@@ -58,6 +59,9 @@
                 </div>
             </div>
         {% endfor %}
+        {% else %}
+        <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-xl font-semibold">Nothing to show here.</h1>
+        {% endif %}
     </div>
 </div>
 
