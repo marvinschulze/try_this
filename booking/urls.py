@@ -25,6 +25,11 @@ urlpatterns = [
     path('<int:booking_id>/book-overview/', views.bookingOverview, name='booking-overview'),
     path('calendar/', views.calendar, name="calendar"),
     path('profile/', views.users_profile, name='profile'),
-    path('profile/<int:pk>/add_info/', views.UserInfoUpdateView.as_view(), name='add_profile_info'),
-    # path('profile/<int:pk>/add_info/', views.update_user_info, name='add_profile_info'),
+    path('profile/<int:pk>/add-info/', views.UserInfoUpdateView.as_view(), name='add_profile_info'),
+    path('profile/create-slot/', views.CreateCoworkingSlotView.as_view(), name='create_slot'),
+    path('profile/<int:pk>/created-slot/', views.CreatedCoworkikngSlotOverView.as_view(), name='created_slot_overview'),
 ]
+
+
+# BUG
+# use slug fields and don't show actual primary key in url

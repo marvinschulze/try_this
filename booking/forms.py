@@ -1,6 +1,6 @@
 from django import forms 
 
-from .models import Booking, UserInfo
+from .models import Booking
 
 
 class BookingForm(forms.ModelForm):
@@ -11,9 +11,6 @@ class BookingForm(forms.ModelForm):
         fields = "__all__"
 
 
-# class UpdateUserInfoForm(forms.ModelForm):
-#     class Meta:
-#         model = UserInfo
-#         fields = ["user", "description", "current_projects"]
+
 
         

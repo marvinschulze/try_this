@@ -7,7 +7,7 @@
     <nav class="w-full px-12 py-3 text-sm text-semibold text-center flex justify-between  ">
         <a href="" class="text-green-900">{{user_info.nickname}}</a>
         <div class="space-x-2">
-            <a href="" class="">Edit Profile</a>
+            <a href="{% url 'booking:add_profile_info' user_info.id %}" class="">Edit Profile</a>
             <a href="{% url 'login:logout' %}" class="text-red-400">Logout</a>
         </div>
     </nav>
@@ -37,7 +37,7 @@
     </div>
     <!-- Create or Book a spot -->
     <div class="flex justify-center space-x-8 py-8 px-12">
-        <a href="{% url 'booking:home' %}" class="flex-1 bg-green-100 rounded shadow-md py-6 hover:bg-green-300 cursor-pointer text-lg text-center tracking-wide">Create a Coworking spot.</a>
+        <a href="{% url 'booking:create_slot' %}" class="flex-1 bg-green-100 rounded shadow-md py-6 hover:bg-green-300 cursor-pointer text-lg text-center tracking-wide">Create a Coworking spot.</a>
         <a href="{% url 'booking:home' %}" class="flex-1 bg-green-100 rounded shadow-md py-6 hover:bg-green-300 cursor-pointer text-lg text-center tracking-wide">Find and book a Coworking spot.</a>
     </div>
 

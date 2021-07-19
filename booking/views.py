@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from .models import Booking
 
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.detail import DetailView
 
 
 from .models import Booking, UserInfo, CowoSlot
@@ -111,19 +112,6 @@ def users_profile(request):
 
         # <<< Get future booked spots for the user, if any >>>
         future_bookings = Booking.objects.filter(username=this_user).filter(host_slot__date__gte=datetime.date.today()).order_by('host_slot__date')
-        # bookings_and_coworkers = []
-        # for booking in future_bookings:
-        #     bookings_and_coworkers =[]
-        #     other_cowos = Booking.objects.filter(host_slot=booking.host_slot)
-        #     other_cowos_info = []
-        #     for cowo in other_cowos:
-        #         other_cowos_info.append(
-        #             {'username': cowo.username, 'time_start': cowo.time_start, 'time_end': cowo.time_end}
-        #         )
-        #     bookings_and_coworkers.append(
-        #         {booking:other_cowos_info}
-        #     )
-
         f_bookings= []
         for booking in future_bookings:
             other_cowos = []
@@ -137,23 +125,47 @@ def users_profile(request):
                 {'booking':booking, 'other_cowos':other_cowos}
             )
 
-            
-
         return render(request, template_name, {'user_info': user_info, 'bookings':f_bookings})
 
 
 
 # Using update view and creating an empty row on user creation
 class UserInfoUpdateView(UpdateView):
-   
     template_name = "booking/add_user_info.html"
     model = UserInfo
     fields = ['description', 'current_projects']
 
+    # def form_valid(self, form):
+    #     form.instance.id = self.request.user.id
+    #     return super().form_valid(form)
+
     def get_success_url(self):
         return reverse('booking:profile')
+
+class CreateCoworkingSlotView(CreateView):
+    template_name = "booking/create_slot.html"
+    model = CowoSlot
+    fields = ["date", "time_start", "time_end", "av_seats"]
+
+    def form_valid(self, form):
+        form.instance.host_username = self.request.user 
+        return super().form_valid(form)
+
+    def book_for_user(self):
+        print("\n\nTHis is executed\n")
+
+    def get_success_url(self):
+        return reverse('booking:created_slot_overview', kwargs={'pk': self.object.pk})
+
+class CreatedCoworkikngSlotOverView(DetailView):
+    template_name = "booking/created_slot_overview.html"
+    model = CowoSlot
+
+
+
+
 
 
 
 ############# [BUG] #############
-# Make update user info inaccessible
+# Make update user info inaccessible to not logged in users (right now accesible via URL)
