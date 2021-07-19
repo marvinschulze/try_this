@@ -38,14 +38,13 @@
     <!-- Create or Book a spot -->
     <div class="flex justify-center space-x-8 py-8 px-12">
         <a href="{% url 'booking:create_slot' %}" class="flex-1 bg-green-100 rounded shadow-md py-6 hover:bg-green-300 cursor-pointer text-lg text-center tracking-wide">Create a Coworking spot.</a>
-        <a href="{% url 'booking:home' %}" class="flex-1 bg-green-100 rounded shadow-md py-6 hover:bg-green-300 cursor-pointer text-lg text-center tracking-wide">Find and book a Coworking spot.</a>
+        <a href="{% url 'booking:slot_list_view' %}" class="flex-1 bg-green-100 rounded shadow-md py-6 hover:bg-green-300 cursor-pointer text-lg text-center tracking-wide">Find and book a Coworking spot.</a>
     </div>
 
 
     <!-- Future meetings -->
     <div class="mx-auto px-2 py-4 pt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-4 md:gap-8 xl:gap-12 xl:mx-20">
         <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-2xl font-bold">Your future meetings:</h1>
-        {% if bookings %}
         {% for booking in bookings %} 
             <div class="col-span-1 bg-white rounded-lg shadow-xl text-center py-2 ">
                 <h1 class="text-2xl font-bold">{{booking.booking.host_slot.date}}</h1>
@@ -58,10 +57,9 @@
                     {% endfor %}
                 </div>
             </div>
+        {% empty %}
+            <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-xl font-semibold">Nothing to show here.</h1>
         {% endfor %}
-        {% else %}
-        <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-xl font-semibold">Nothing to show here.</h1>
-        {% endif %}
     </div>
 </div>
 

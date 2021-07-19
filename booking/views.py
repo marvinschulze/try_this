@@ -8,7 +8,8 @@ from django.contrib.auth.models import User
 from .models import Booking
 
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.detail import DetailView
+from django.views.generic.detail import DetailView, SingleObjectMixin
+from django.views.generic.list import ListView
 
 
 from .models import Booking, UserInfo, CowoSlot
@@ -56,6 +57,7 @@ def bookingOverview(request, booking_id):
     template_name = 'booking/book-overview.html'
     return render(request, template_name, {'booking': booking})
 
+# @login_required
 def calendar(request):
     template_name = 'booking/calendar.html'
     # set up empty list for storing && acces database
@@ -151,9 +153,6 @@ class CreateCoworkingSlotView(CreateView):
         form.instance.host_username = self.request.user 
         return super().form_valid(form)
 
-    def book_for_user(self):
-        print("\n\nTHis is executed\n")
-
     def get_success_url(self):
         return reverse('booking:created_slot_overview', kwargs={'pk': self.object.pk})
 
@@ -162,6 +161,23 @@ class CreatedCoworkikngSlotOverView(DetailView):
     model = CowoSlot
 
 
+
+class CoworkingSlotListView(ListView):
+    template_name = "booking/slot_list_view.html"
+    queryset = CowoSlot.objects.filter(date__gte=datetime.date.today())
+
+# class CreateBookingView(CreateView):
+#     template_name = 'booking/create_booking.html'
+#     model = Booking
+#     fields = ["time_start", "time_end"]
+
+#     def form_valid(self, form):
+#         form.instance.username = self.request.user
+#         form.instance.host_slot = self
+#         return super().form_valid(form)
+
+#     def get_success_url(self):
+#         return reverse('booking:profile')
 
 
 

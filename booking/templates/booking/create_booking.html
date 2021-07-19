@@ -1,0 +1,23 @@
+{% extends 'booking/base.html' %} 
+
+{% block content %}  
+
+    <form method="post" class="pt-4 px-12 grid grid-cols-3 space-y-8">
+        {% csrf_token %}  
+        {% load widget_tweaks %}
+        <!-- <h3 class="col-span-1 text-center p-4 font-semibold leading-wide"></h3> -->
+        <!-- {% render_field form.date class="col-span-2 p-2 border border-solid rounded-md" %} -->
+
+        <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Time to start</h3>
+        {% render_field form.time_start class="col-span-2 p-2 border border-solid rounded-md" %}
+        <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Time to end</h3>
+        {% render_field form.time_end class="col-span-2 p-2 border border-solid rounded-md" %}
+
+        <!-- <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">How many seats are available?</h3> -->
+        <!-- {% render_field form.av_seats class="col-span-2 p-2 border border-solid rounded-md" %} -->
+
+        <input type="submit" class="col-span-3" value="Book this slot.">
+    </form>
+
+
+{% endblock %}
