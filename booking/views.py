@@ -113,7 +113,7 @@ def users_profile(request):
         future_bookings = Booking.objects.filter(username=this_user).filter(host_slot__date__gte=datetime.date.today()).order_by('host_slot__date')
         # bookings_and_coworkers = []
         # for booking in future_bookings:
-        #     bookings_and_coworkers
+        #     bookings_and_coworkers =[]
         #     other_cowos = Booking.objects.filter(host_slot=booking.host_slot)
         #     other_cowos_info = []
         #     for cowo in other_cowos:
@@ -124,9 +124,22 @@ def users_profile(request):
         #         {booking:other_cowos_info}
         #     )
 
+        f_bookings= []
+        for booking in future_bookings:
+            other_cowos = []
+            for cowo in Booking.objects.filter(host_slot=booking.host_slot):
+                cowo_user = User.objects.get(username=cowo)
+                other_cowos.append(
+                    {'username': cowo.username, 'first_name': cowo_user.first_name, 'last_name': cowo_user.last_name,
+                    'time_start': cowo.time_start, 'time_end': cowo.time_end}
+                )
+            f_bookings.append(
+                {'booking':booking, 'other_cowos':other_cowos}
+            )
+
             
 
-        return render(request, template_name, {'user_info': user_info, 'bookings':future_bookings})
+        return render(request, template_name, {'user_info': user_info, 'bookings':f_bookings})
 
 
 
