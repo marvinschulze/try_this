@@ -2,13 +2,22 @@
 {% block content %} 
 
 <div class="mx-20 lg:mx-32 mt-8 py-4 bg-white rounded divide-y-2 divide-green-800 divide-solid">
-    <form method="post" action="">
+    <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-2xl font-bold">Edit your profile</h1>
+    <form method="post" class="pt-4 px-12 grid grid-cols-3 space-y-8">
         {% csrf_token %}  
-        {{form.description}}
-        {{form.current_projects}}
-        <!-- {{form.as_p}} -->
+        {% load widget_tweaks %}
+        <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Your self description</h3>
+        {% render_field form.description class="col-span-2 p-2 border border-solid rounded-md" %}
+
+        <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Your current projects</h3>
+        {% render_field form.current_projects class="col-span-2 p-2 border border-solid rounded-md" %}
+
+        <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Your profile image</h3>
+        <div class="col-span-2 p-2 border border-solid rounded-md bg-gray-300 text-md text-red-700 leading-wide">This feature is coming soon.</div>
+
+
         <input type="hidden" name="user" value="{{ request.user.id }}">
-        <input type="submit" value="Add info to Profile">
+        <input type="submit" class="col-span-3" value="Save changes">
     </form>
 
 </div>

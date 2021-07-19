@@ -42,31 +42,12 @@
     </div>
 
 
-
-
-
-
     <!-- Future meetings -->
     <div class="mx-auto px-2 py-4 pt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-4 md:gap-8 xl:gap-12 xl:mx-20">
         <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-2xl font-bold">Your future meetings:</h1>
-        
-        <!-- {% for booking in bookings %} 
-
-            <div class="col-span-1 bg-white rounded-lg shadow-xl text-center py-2 ">
-                <h1 class="text-2xl font-bold">{{booking.host_slot.date}}</h1>
-                <h1 class="text-1xl font-semibold">@{{booking.host_slot.host_username}}</h1>
-                <h3 class="text-lg tracking-widest">{{booking.host_slot.time_start}} - {{booking.host_slot.time_end}}</h3>
-                <h4 class="text-sm italic">5 seats available</h4>
-                <div class="grid grid-cols-1 p-2 gap-2 mt-4">
-                    <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">You ({{booking.time_start}} - {{booking.time_end}})</div>
-                </div>
-            </div>
-        {% endfor %} -->
         {% for booking in bookings %} 
-
             <div class="col-span-1 bg-white rounded-lg shadow-xl text-center py-2 ">
                 <h1 class="text-2xl font-bold">{{booking.booking.host_slot.date}}</h1>
-                <!-- <h1 class="text-2xl font-bold">{{booking.host_slot.date}}</h1> -->
                 <h1 class="text-1xl font-semibold">@{{booking.booking.host_slot.host_username}}</h1>
                 <h3 class="text-lg tracking-widest">{{booking.booking.host_slot.time_start}} - {{booking.booking.host_slot.time_end}}</h3>
                 <h4 class="text-sm italic">5 seats available</h4>
@@ -77,27 +58,6 @@
                 </div>
             </div>
         {% endfor %}
-
-        <!-- <div class="col-span-1 bg-white rounded-lg shadow-xl text-center py-2 ">
-            <h1 class="text-2xl font-bold">12.07.2021</h1>
-            <h1 class="text-1xl font-semibold">@Leon Wiesemann</h1>
-            <h3 class="text-lg tracking-widest">10:00 - 18:00</h3>
-            <h4 class="text-sm italic">5 seats available</h4>
-            <div class="grid grid-cols-1 p-2 gap-2 mt-4">
-                <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">Finn Marvin Schulze</div>
-                <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">Leon Scholz</div>
-            </div>
-        </div>
-        <div class="col-span-1 bg-white rounded-lg shadow-xl text-center py-2 ">
-            <h1 class="text-2xl font-bold">12.07.2021</h1>
-            <h1 class="text-1xl font-semibold">@Leon Wiesemann</h1>
-            <h3 class="text-lg tracking-widest">10:00 - 18:00</h3>
-            <h4 class="text-sm italic">5 seats available</h4>
-            <div class="grid grid-cols-1 p-2 gap-2 mt-4">
-                <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">Finn Marvin Schulze</div>
-                <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">Leon Scholz</div>
-            </div>
-        </div> -->
     </div>
 </div>
 
