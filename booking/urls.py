@@ -28,8 +28,11 @@ urlpatterns = [
     path('<int:pk>/add-info/', views.UserInfoUpdateView.as_view(), name='add_profile_info'),
     path('create-slot/', views.CreateCoworkingSlotView.as_view(), name='create_slot'),
     path('<int:pk>/created-slot/', views.CreatedCoworkikngSlotOverView.as_view(), name='created_slot_overview'),
+    path('<int:pk>/delete-slot/', views.DeleteCoworkingSlotView.as_view(), name='delete_slot'),
     path('slot-list/', views.CoworkingSlotListView.as_view(), name='slot_list_view'),
     path('<int:slot_id>/create-booking/', views.CreateBookingView.as_view(), name='create_booking'),
+    path('<int:pk>/update-booking/', views.UpdateBookingView.as_view(), name='update_booking'),
+    path('<int:pk>/delete-booking/', views.DeleteBookingView.as_view(), name='delete_booking'),
 ]
 
 

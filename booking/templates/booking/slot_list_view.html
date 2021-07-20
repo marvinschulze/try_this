@@ -5,6 +5,7 @@
 
 
 <div class="mx-auto px-2 py-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-4 md:gap-8 xl:gap-12 xl:mx-20">
+
     <h1 class="col-span-1 md:col-span-2 xl:col-span-3 mt-4 text-center text-2xl font-bold">All future meetings:</h1>
     {% for slot in object_list %}
         <div class="col-span-1 bg-white rounded-lg shadow-xl text-center py-2 ">
@@ -15,8 +16,11 @@
             <div class="grid grid-cols-1 p-2 gap-2 mt-4">
                 {% for b in slot.booking_set.all %} 
                     <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">{{b.username}} ({{b.time_start}} - {{b.time_end}})</div>
+                    {% if b.username == user %}
+                        Edit your booking
+                    {% endif %}
                     {% empty %} 
-                    <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">No one has booked yet.</div>
+                    <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">No one has booked yet.</div>         
                 {% endfor %}
                 <a href="{% url 'booking:create_booking' slot.id %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-green-600">book a spot</a>
             </div>

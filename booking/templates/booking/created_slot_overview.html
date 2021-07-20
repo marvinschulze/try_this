@@ -13,7 +13,8 @@
         <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Date</span><span class="text-sm">{{object.date}}</span></div>
         <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Time</span><span class="text-sm">{{object.time_start}} - {{object.time_end}}</span></div>
         <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Available seats</span><span class="text-sm">{{object.av_seats}}</span></div>
-        <button class="col-span-1 md:col-span-2 mt-4 text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-md"><a href="{% url 'booking:home' %}">Back Home.</a> </button>
+        <a href="{% url 'booking:profile' %}" class="col-span-1 md:col-span-1 mt-4 text-white bg-yellow-200 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-400 rounded text-md">Go back to profile.</a>
+        <a href="{% url 'booking:create_booking' object.id %}" class="col-span-1 mt-4 text-white bg-green-400 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-md">Book yourself a spot.</a>
     </div>
 
 </div>

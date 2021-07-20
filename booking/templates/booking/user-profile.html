@@ -56,10 +56,32 @@
                         <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">{{cowo.username.first_name}} {{cowo.username.last_name}} ({{cowo.time_start}} - {{cowo.time_end}})</div>
                     {% endfor %}
                 </div>
+                <a href="{% url 'booking:delete_booking' booking.id %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-red-600">delete your booking</a>
+                <a href="{% url 'booking:update_booking' booking.id %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-green-600">update your booking</a>
             </div>
         {% empty %}
             <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-xl font-semibold">Nothing to show here.</h1>
             <h3 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-md font-semibold">You have to book the spots you've created for them to be shown.</h3>
+        {% endfor %}
+
+        <!-- Show future hosting slots, where user is not attending -->
+        {% if slots %}  
+        <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-2xl font-bold">You are hosting, but not attending:</h1>
+        {% endif %}
+        {% for slot in slots %} 
+            <div class="col-span-1 bg-white rounded-lg shadow-xl text-center py-2 ">
+                <h1 class="text-2xl font-bold">{{slot.date}}</h1>
+                <h1 class="text-1xl font-semibold">@{{slot.host_username}}</h1>
+                <h3 class="text-lg tracking-widest">{{slot.time_start}} - {{slot.time_end}}</h3>
+                <h4 class="text-sm italic">5 seats available</h4>
+                <div class="grid grid-cols-1 p-2 gap-2 mt-4">
+                    {% for cowo in slot.booking_set.all %}
+                        <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">{{cowo.username.first_name}} {{cowo.username.last_name}} ({{cowo.time_start}} - {{cowo.time_end}})</div>
+                    {% endfor %}
+                </div>
+                <a href="{% url 'booking:create_booking' slot.id %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-green-600">book a slot</a>
+                <a href="{% url 'booking:delete_slot' slot.id %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-red-600">delete this slot</a>
+            </div>
         {% endfor %}
     </div>
 </div>

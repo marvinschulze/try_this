@@ -22,14 +22,14 @@
             {% csrf_token %}  
             {% load widget_tweaks %}
             <h3 class="col-span-3 text-center pt-4 font-semibold leading-wide">Book yourself in at this slot.</h3>
-            {% if view.times %}
-                <h3 class="col-span-3 text-center text-md text-red-400 leading-wide">Please select times in range of the spot's times.</h3>
-            {% endif %}
-            {{view.times}}
+            {% for m in messages %}
+                <h3 class="col-span-3 text-center text-md text-red-400 leading-wide">{{m}}</h3>
+            {% endfor %}
+
             <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Time to start</h3>
-            {% render_field form.time_start type="time" min="{{view.slot.time_start}}" max="{{view.slot.time_end}}" class="col-span-2 p-2 border border-solid rounded-md" %}
+            {% render_field form.time_start type="time" class="col-span-2 p-2 border border-solid rounded-md" %}
             <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Time to end</h3>
-            {% render_field form.time_end type="time" min="{{view.slot.time_start}}" max="{{view.slot.time_end}}" class="col-span-2 p-2 border border-solid rounded-md" %}
+            {% render_field form.time_end type="time" class="col-span-2 p-2 border border-solid rounded-md" %}
 
             <input type="submit" class="col-span-3" value="Book this slot.">
         </form>

@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
+from django.urls import reverse, reverse_lazy
 
 # # Import authentication views & decorators
 # from django.contrib.auth import views as auth_views
@@ -6,15 +7,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.list import ListView
 
 from django.core.exceptions import ValidationError
+from django.contrib import messages
 
 
 from .models import Booking, UserInfo, CowoSlot
-from .forms import BookingForm
+from .forms import BookingForm, CreateSlotForm
 
 
 
@@ -89,8 +91,10 @@ def users_profile(request):
         template_name = 'booking/user-profile.html'
         # <<< Get future booked spots for the user, if any >>>
         future_bookings = Booking.objects.filter(username=request.user).filter(host_slot__date__gte=datetime.date.today()).order_by('host_slot__date')
+        # fetch all future slots where user is hosting, but not attending
+        future_slots = CowoSlot.objects.filter(host_username=request.user).exclude(booking__username=request.user).filter(date__gte=datetime.date.today()).order_by('date')
 
-        return render(request, template_name, {'bookings':future_bookings})
+        return render(request, template_name, {'bookings':future_bookings, 'slots':future_slots})
 
 
 
@@ -122,18 +126,75 @@ class CreateCoworkingSlotView(CreateView):
 class CreatedCoworkikngSlotOverView(DetailView):
     template_name = "booking/created_slot_overview.html"
     model = CowoSlot
-    # show option to check user in (on own coworking slot)
 
+class DeleteCoworkingSlotView(DeleteView):
+    template_name = "booking/delete_slot.html"
+    model = CowoSlot
+
+    def get_success_url(self):
+        return reverse_lazy("booking:profile")
+
+class UpdateBookingView(UpdateView):
+    template_name = "booking/update_booking_view.html"
+    model = Booking
+    fields = ["time_start", "time_end"]
+    time_error = "Enter a valid time which is in the slot's range."
+
+    def slot(self):
+        b = Booking.objects.get(pk=self.kwargs['pk'])
+        slot = CowoSlot.objects.get(pk=b.host_slot.id)
+        return slot
+
+
+    def form_valid(self, form):
+        # get logged in user, fetch Slot by slot_id (from url)
+        form.instance.user = self.request.user
+        slot = self.slot()
+        form.instance.host_slot = slot
+
+        # fetch the host slot and check if entered times are in range, if not call form_invalid
+        t_s = form.cleaned_data['time_start']
+        t_e = form.cleaned_data['time_end']
+        
+        # Compare for validity
+        if t_s < slot.time_start or t_s > slot.time_end or t_e > slot.time_end or t_e < t_s:
+            messages.error(self.request, self.time_error)
+            return self.form_invalid(form)
+        else:
+            return super(UpdateBookingView, self).form_valid(form)
+
+
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse('booking:profile')
+
+class DeleteBookingView(DeleteView):
+    template_name = "booking/delete_booking.html"
+    model = Booking
+
+    def get_success_url(self):
+        return reverse_lazy('booking:profile')
 
 
 class CoworkingSlotListView(ListView):
     template_name = "booking/slot_list_view.html"
-    queryset = CowoSlot.objects.filter(date__gte=datetime.date.today())
+    # model = CowoSlot
+
+    def get_queryset(self):
+        queryset = CowoSlot.objects.filter(date__gte=datetime.date.today()).exclude(booking__username=self.request.user)
+        return queryset
+
 
 class CreateBookingView(CreateView):
+
     template_name = 'booking/create_booking.html'
     model = Booking
     fields = ["time_start", "time_end"]
+    time_error = "Enter a valid time which is in the slot's range."
+    dupli_error = "You are already booked in this slot!"
+
 
     def slot(self):
         slot = CowoSlot.objects.get(pk=self.kwargs['slot_id'])
@@ -141,27 +202,36 @@ class CreateBookingView(CreateView):
 
 
     def form_valid(self, form):
-
+        # get logged in user, fetch Slot by slot_id (from url)
         form.instance.username = self.request.user
         pk = self.kwargs['slot_id']
         form.instance.host_slot = get_object_or_404(CowoSlot, pk=pk)
 
-        # No possibility to give back error?
+        # fetch the host slot and check if entered times are in range, if not call form_invalid
         slot = self.slot()
-        # get input for time_start & time_end
         t_s = form.cleaned_data['time_start']
         t_e = form.cleaned_data['time_end']
+        
+        # first check if there is a booking for this user with this slot
+        # if Booking.objects.filter(host_slot=slot.id).filter(username=self.request.user).count():
+        if Booking.objects.filter(host_slot=slot.id).filter(username=self.request.user).exists():
+            messages.error(self.request, self.dupli_error)
+            return self.form_invalid(form)
         # Compare for validity
-        if t_s >= slot.time_start and t_s < slot.time_end and t_e <= slot.time_end and t_e > t_s:
-            return super(CreateBookingView, self).form_valid(form)
+        elif t_s < slot.time_start or t_s > slot.time_end or t_e > slot.time_end or t_e < t_s:
+            messages.error(self.request, self.time_error)
+            return self.form_invalid(form)
         else:
-            return redirect('booking:create_booking', pk)
-            # return ValidationError
+            return super(CreateBookingView, self).form_valid(form)
 
 
+    def form_invalid(self, form):
+        return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse('booking:profile')
+
+
 
 
 

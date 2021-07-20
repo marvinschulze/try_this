@@ -1,0 +1,32 @@
+{% extends 'booking/base.html' %} 
+
+<!-- Get time start and time end of host; then type="time" min="}}" max={ || also to backend validation-->
+    <!-- DOES NOT WORK -->
+
+
+{% block content %}  
+
+    <div class="container pt-4 px-12">
+
+        <!-- slot overview -->
+        <!-- Display Date, Time, Location, Name, E-Mail -->
+        
+
+        <form method="post" class="px-12 grid grid-cols-3 space-y-8">
+
+            {% csrf_token %}  
+            {% load widget_tweaks %}
+            <h3 class="col-span-3 text-center pt-4 font-semibold leading-wide">Delete your booking</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-4 sm:gap-y-8 p-1 md:pt-12 md:px-12">
+                    <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">{{object.host_slot.host_username.first_name}} {{object.host_slot.host_username.last_name}}</span><span class="text-sm">{{object.host_slot.host_username}}</span></div>
+                    <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Date</span><span class="text-sm">{{object.host_slot.date}}</span></div>
+                    <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Time</span><span class="text-sm">{{object.time_start}} - {{object.time_end}}</span></div>
+        
+                </div>
+            <input type="submit" class="col-span-3" value="Delete my booking">
+        </form>
+    </div>
+    
+
+
+{% endblock %}
