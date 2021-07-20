@@ -5,11 +5,12 @@ from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from .models import Booking
 
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.list import ListView
+
+from django.core.exceptions import ValidationError
 
 
 from .models import Booking, UserInfo, CowoSlot
@@ -86,48 +87,10 @@ def users_profile(request):
         return redirect('login:login')
     else:  
         template_name = 'booking/user-profile.html'
-        this_user = User.objects.get(username=request.user.username)
-        
-        # <<< Trying to get additional Info for the user, if submitted >>>
-        description = None
-        curr_projects = None
-        profile_image = None
-        # Try getting a user's info from the DB; if found: check for added info; else return None (set above)
-        try:
-            this_user_info = UserInfo.objects.get(user=this_user.id)
-            if this_user_info.description:
-                description = this_user_info.description
-            if this_user_info.current_projects:
-                curr_projects = this_user_info.current_projects
-            if this_user_info.profile_image:
-                profile_image = this_user_info.profile_image
-        except Exception as err:
-            print("\nFinding user (attributes) throw an exception: \n" + str(err))
-
-        rel_user_info = UserInfo.objects.get(user=request.user)
-
-        user_info = {
-            'first_name': this_user.first_name, 'nickname': this_user.username,
-            'description': description, 'projects': curr_projects, 'profile_image': profile_image,
-            'id':rel_user_info.id
-            }
-
         # <<< Get future booked spots for the user, if any >>>
-        future_bookings = Booking.objects.filter(username=this_user).filter(host_slot__date__gte=datetime.date.today()).order_by('host_slot__date')
-        f_bookings= []
-        for booking in future_bookings:
-            other_cowos = []
-            for cowo in Booking.objects.filter(host_slot=booking.host_slot):
-                cowo_user = User.objects.get(username=cowo)
-                other_cowos.append(
-                    {'username': cowo.username, 'first_name': cowo_user.first_name, 'last_name': cowo_user.last_name,
-                    'time_start': cowo.time_start, 'time_end': cowo.time_end}
-                )
-            f_bookings.append(
-                {'booking':booking, 'other_cowos':other_cowos}
-            )
+        future_bookings = Booking.objects.filter(username=request.user).filter(host_slot__date__gte=datetime.date.today()).order_by('host_slot__date')
 
-        return render(request, template_name, {'user_info': user_info, 'bookings':f_bookings})
+        return render(request, template_name, {'bookings':future_bookings})
 
 
 
@@ -159,6 +122,7 @@ class CreateCoworkingSlotView(CreateView):
 class CreatedCoworkikngSlotOverView(DetailView):
     template_name = "booking/created_slot_overview.html"
     model = CowoSlot
+    # show option to check user in (on own coworking slot)
 
 
 
@@ -166,18 +130,38 @@ class CoworkingSlotListView(ListView):
     template_name = "booking/slot_list_view.html"
     queryset = CowoSlot.objects.filter(date__gte=datetime.date.today())
 
-# class CreateBookingView(CreateView):
-#     template_name = 'booking/create_booking.html'
-#     model = Booking
-#     fields = ["time_start", "time_end"]
+class CreateBookingView(CreateView):
+    template_name = 'booking/create_booking.html'
+    model = Booking
+    fields = ["time_start", "time_end"]
 
-#     def form_valid(self, form):
-#         form.instance.username = self.request.user
-#         form.instance.host_slot = self
-#         return super().form_valid(form)
+    def slot(self):
+        slot = CowoSlot.objects.get(pk=self.kwargs['slot_id'])
+        return slot
 
-#     def get_success_url(self):
-#         return reverse('booking:profile')
+
+    def form_valid(self, form):
+
+        form.instance.username = self.request.user
+        pk = self.kwargs['slot_id']
+        form.instance.host_slot = get_object_or_404(CowoSlot, pk=pk)
+
+        # No possibility to give back error?
+        slot = self.slot()
+        # get input for time_start & time_end
+        t_s = form.cleaned_data['time_start']
+        t_e = form.cleaned_data['time_end']
+        # Compare for validity
+        if t_s >= slot.time_start and t_s < slot.time_end and t_e <= slot.time_end and t_e > t_s:
+            return super(CreateBookingView, self).form_valid(form)
+        else:
+            return redirect('booking:create_booking', pk)
+            # return ValidationError
+
+
+
+    def get_success_url(self):
+        return reverse('booking:profile')
 
 
 

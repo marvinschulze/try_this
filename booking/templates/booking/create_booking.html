@@ -1,23 +1,40 @@
 {% extends 'booking/base.html' %} 
 
+<!-- Get time start and time end of host; then type="time" min="}}" max={ || also to backend validation-->
+    <!-- DOES NOT WORK -->
+
+
 {% block content %}  
 
-    <form method="post" class="pt-4 px-12 grid grid-cols-3 space-y-8">
-        {% csrf_token %}  
-        {% load widget_tweaks %}
-        <!-- <h3 class="col-span-1 text-center p-4 font-semibold leading-wide"></h3> -->
-        <!-- {% render_field form.date class="col-span-2 p-2 border border-solid rounded-md" %} -->
+    <div class="container pt-4 px-12">
 
-        <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Time to start</h3>
-        {% render_field form.time_start class="col-span-2 p-2 border border-solid rounded-md" %}
-        <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Time to end</h3>
-        {% render_field form.time_end class="col-span-2 p-2 border border-solid rounded-md" %}
+                <!-- slot overview -->
+        <!-- Display Date, Time, Location, Name, E-Mail -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-4 sm:gap-y-8 p-1 md:pt-12 md:px-12">
+            <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">{{view.slot.host_username.first_name}} {{view.slot.host_username.last_name}}</span><span class="text-sm">{{view.slot.host_username}}</span></div>
+            <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Date</span><span class="text-sm">{{view.slot.date}}</span></div>
+            <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Time</span><span class="text-sm">{{view.slot.time_start}} - {{view.slot.time_end}}</span></div>
+            <div class="col-span-1 bg-white rounded text-green-800 p-1 grid grid-rows-1"><span class="text-md font-semibold">Available seats</span><span class="text-sm">{{view.slot.av_seats}}</span></div>
+        </div>
 
-        <!-- <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">How many seats are available?</h3> -->
-        <!-- {% render_field form.av_seats class="col-span-2 p-2 border border-solid rounded-md" %} -->
+        <form method="post" class="px-12 grid grid-cols-3 space-y-8">
 
-        <input type="submit" class="col-span-3" value="Book this slot.">
-    </form>
+            {% csrf_token %}  
+            {% load widget_tweaks %}
+            <h3 class="col-span-3 text-center pt-4 font-semibold leading-wide">Book yourself in at this slot.</h3>
+            {% if view.times %}
+                <h3 class="col-span-3 text-center text-md text-red-400 leading-wide">Please select times in range of the spot's times.</h3>
+            {% endif %}
+            {{view.times}}
+            <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Time to start</h3>
+            {% render_field form.time_start type="time" min="{{view.slot.time_start}}" max="{{view.slot.time_end}}" class="col-span-2 p-2 border border-solid rounded-md" %}
+            <h3 class="col-span-1 text-center p-4 font-semibold leading-wide">Time to end</h3>
+            {% render_field form.time_end type="time" min="{{view.slot.time_start}}" max="{{view.slot.time_end}}" class="col-span-2 p-2 border border-solid rounded-md" %}
+
+            <input type="submit" class="col-span-3" value="Book this slot.">
+        </form>
+    </div>
+    
 
 
 {% endblock %}

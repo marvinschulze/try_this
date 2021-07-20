@@ -18,7 +18,7 @@
                     {% empty %} 
                     <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">No one has booked yet.</div>
                 {% endfor %}
-                <a href="{% url 'booking:home' %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-green-600">book a spot</a>
+                <a href="{% url 'booking:create_booking' slot.id %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-green-600">book a spot</a>
             </div>
         </div>
     {%  endfor %}

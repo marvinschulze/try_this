@@ -5,9 +5,9 @@
 <div class="mx-20 lg:mx-32 mt-8 py-4 bg-white rounded divide-y-2 divide-green-800 divide-solid">
     <!-- Navbar -->
     <nav class="w-full px-12 py-3 text-sm text-semibold text-center flex justify-between  ">
-        <a href="" class="text-green-900">{{user_info.nickname}}</a>
+        <a href="" class="text-green-900">{{user.username}}</a>
         <div class="space-x-2">
-            <a href="{% url 'booking:add_profile_info' user_info.id %}" class="">Edit Profile</a>
+            <a href="{% url 'booking:add_profile_info' user.userinfo.id %}" class="">Edit Profile</a>
             <a href="{% url 'login:logout' %}" class="text-red-400">Logout</a>
         </div>
     </nav>
@@ -17,20 +17,20 @@
             <span class="text-lg tracking-wide text-center w-full">Hallo {{user.first_name}} {{user.last_name}}.</span>
             <!-- <span class="text-sm italic text-center w-full">Here is space for your self description. <p class="underline">Add now.</p></span> -->
             <span class="text-sm italic text-center w-full">
-                {% if user_info.description %}
-                    {{user_info.description}}
+                {% if user.userinfo.description %}
+                    {{user.userinfo.description}}
                 {% else %} 
-                    <a href="{% url 'booking:add_profile_info' user_info.id %}">Here is space for your self description. <p class="underline">Add now.</p></a> 
+                    <a href="{% url 'booking:add_profile_info' user.userinfo.id %}">Here is space for your self description. <p class="underline">Add now.</p></a> 
                 {% endif %}
             </span>
         </div>
         <div class="col-span-1  flex flex-col items-center">
             <div class="w-24 h-24 bg-gray-200 rounded-full"></div>
             <span class="text-sm italic">
-                {% if user_info.profile_image %}
-                    {{user_info.profile_image}}
+                {% if user.userinfo.profile_image %}
+                    {{user.userinfo.profile_image}}
                 {% else %} 
-                    <a href="{% url 'booking:add_profile_info' user_info.id  %}">Want to <span class="underline">add a picture</span>?</a>
+                    <a href="{% url 'booking:add_profile_info' user.userinfo.id  %}">Want to <span class="underline">add a picture</span>?</a>
                 {% endif %}
             </span>
         </div>
@@ -47,18 +47,19 @@
         <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-2xl font-bold">Your future meetings:</h1>
         {% for booking in bookings %} 
             <div class="col-span-1 bg-white rounded-lg shadow-xl text-center py-2 ">
-                <h1 class="text-2xl font-bold">{{booking.booking.host_slot.date}}</h1>
-                <h1 class="text-1xl font-semibold">@{{booking.booking.host_slot.host_username}}</h1>
-                <h3 class="text-lg tracking-widest">{{booking.booking.host_slot.time_start}} - {{booking.booking.host_slot.time_end}}</h3>
+                <h1 class="text-2xl font-bold">{{booking.host_slot.date}}</h1>
+                <h1 class="text-1xl font-semibold">@{{booking.host_slot.host_username}}</h1>
+                <h3 class="text-lg tracking-widest">{{booking.host_slot.time_start}} - {{booking.host_slot.time_end}}</h3>
                 <h4 class="text-sm italic">5 seats available</h4>
                 <div class="grid grid-cols-1 p-2 gap-2 mt-4">
-                    {% for cowo in booking.other_cowos %}
-                        <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">{{cowo.first_name}} {{cowo.last_name}} ({{cowo.time_start}} - {{cowo.time_end}})</div>
+                    {% for cowo in booking.host_slot.booking_set.all %}
+                        <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">{{cowo.username.first_name}} {{cowo.username.last_name}} ({{cowo.time_start}} - {{cowo.time_end}})</div>
                     {% endfor %}
                 </div>
             </div>
         {% empty %}
             <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-xl font-semibold">Nothing to show here.</h1>
+            <h3 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-md font-semibold">You have to book the spots you've created for them to be shown.</h3>
         {% endfor %}
     </div>
 </div>

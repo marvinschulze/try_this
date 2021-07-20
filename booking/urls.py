@@ -29,7 +29,7 @@ urlpatterns = [
     path('create-slot/', views.CreateCoworkingSlotView.as_view(), name='create_slot'),
     path('<int:pk>/created-slot/', views.CreatedCoworkikngSlotOverView.as_view(), name='created_slot_overview'),
     path('slot-list/', views.CoworkingSlotListView.as_view(), name='slot_list_view'),
-    # path('<int:slot_id>/create-booking/', views.CreateBookingView.as_view(), name='create_booking'),
+    path('<int:slot_id>/create-booking/', views.CreateBookingView.as_view(), name='create_booking'),
 ]
 
 
