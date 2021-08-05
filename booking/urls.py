@@ -24,11 +24,14 @@ urlpatterns = [
     path('book-now/', views.booking, name='booking-index'),
     path('<int:booking_id>/book-overview/', views.bookingOverview, name='booking-overview'),
     path('calendar/', views.calendar, name="calendar"),
+    # Profile & Editing
     path('profile/', views.users_profile, name='profile'),
     path('<int:pk>/add-info/', views.UserInfoUpdateView.as_view(), name='add_profile_info'),
+    # Create slot / Confirmation / Delete
     path('create-slot/', views.CreateCoworkingSlotView.as_view(), name='create_slot'),
     path('<int:pk>/created-slot/', views.CreatedCoworkikngSlotOverView.as_view(), name='created_slot_overview'),
     path('<int:pk>/delete-slot/', views.DeleteCoworkingSlotView.as_view(), name='delete_slot'),
+    # Slot List / Book Slot / Update / Delete
     path('slot-list/', views.CoworkingSlotListView.as_view(), name='slot_list_view'),
     path('<int:slot_id>/create-booking/', views.CreateBookingView.as_view(), name='create_booking'),
     path('<int:pk>/update-booking/', views.UpdateBookingView.as_view(), name='update_booking'),
