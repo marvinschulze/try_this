@@ -56,8 +56,10 @@
                         <div class="col-span-1 p-1 text-sm text-gray-600 tracking-tight border rounded bg-green-50">{{cowo.username.first_name}} {{cowo.username.last_name}} ({{cowo.time_start}} - {{cowo.time_end}})</div>
                     {% endfor %}
                 </div>
-                <a href="{% url 'booking:delete_booking' booking.id %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-red-600">delete your booking</a>
-                <a href="{% url 'booking:update_booking' booking.id %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-green-600">update your booking</a>
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <a href="{% url 'booking:delete_booking' booking.id %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-red-600">delete your booking</a>
+                    <a href="{% url 'booking:update_booking' booking.id %}" class="col-span-1 p-1 text-sm text-white tracking-tight border rounded-2xl bg-green-600">update your booking</a>   
+                </div>
             </div>
         {% empty %}
             <h1 class="col-span-1 md:col-span-2 xl:col-span-3 text-center text-xl font-semibold">Nothing to show here.</h1>
