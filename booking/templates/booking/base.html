@@ -11,7 +11,7 @@
 
 	<body class=" font-serif leading-normal tracking-normal bg-gray-300">
         <!-- Nav bar for all pages -->
-        <header class="text-blue-600 text-md font-light mt-2 mx-4">
+        <header class="text-blue-800 text-sm font-light tracking-tight mt-2 mx-4 ">
           <a href="{% url 'booking:home' %}" class="bg-blue-800 rounded-full text-white py-1 px-2">Home</a>
               {% if user.is_authenticated %}
                 <span class="md:ml-3 text-md"><a href="{% url 'booking:create_slot' %}">Host a Slot</a></span>
@@ -19,12 +19,12 @@
 			  	      <span class="md:ml-3 text-md"><a href="{% url 'booking:profile' %}">Profile</a></span>
 			  	      <span class="md:ml-3 text-md text-red-700"><a href="{% url 'login:logout' %}">Logout</a></span>
               {% else %}
-              <span class="md:ml-3 text-md"><a href="{% url 'login:register' %}">Create an Account</a></span>
-              	<span class="md:ml-3 text-md"><a href="{% url 'login:login' %}">Login</a></span>
+              <span class="ml-3 text-md "><a href="{% url 'login:register' %}">Create an Account</a></span>
+              	<span class="ml-4 text-md"><a href="{% url 'login:login' %}">Login</a></span>
               {% endif %}
           </header>
 
-        <div class="width-full px-8 pb-4 ">
+        <div class="width-full md:px-8 pb-4 ">
 
             {% block content %} 
             {% endblock %} 
